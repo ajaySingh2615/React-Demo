@@ -1,5 +1,6 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const pizzaData = [
   {
@@ -48,7 +49,7 @@ const pizzaData = [
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Header />
       <Menu />
       <Footer />
@@ -57,29 +58,52 @@ function App() {
 }
 
 function Header() {
-  return <h1>Fast React Pizza Co.</h1>;
+  const style = {};
+  return (
+    <header className="header">
+      <h1 style={style} className="header">
+        Fast React Pizza Co.
+      </h1>
+    </header>
+  );
 }
 function Menu() {
   return (
-    <div>
+    <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza />
-    </div>
-  );
-}
-function Footer() {
-  return (
-    <footer> {new Date().toLocaleTimeString()} We're currently open!</footer>
+      <ul className="pizzas">
+        {pizzaData.map((pizza) => (
+          <Pizza pizzaObj={pizza} key={pizza.name} />
+        ))}
+      </ul>
+    </main>
   );
 }
 
-function Pizza() {
+function Pizza(props) {
+  console.log(props);
   return (
-    <div>
-      <img src="pizzas/focaccia.jpg" alt="focaccia" />
-      <h2>Focaccia</h2>
-      <p>Bread with italian olive oil and rosemary</p>
-    </div>
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+      <div>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>{props.pizzaObj.price + 1}</span>
+      </div>
+    </li>
+  );
+}
+
+function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+
+  return (
+    <footer className="footer">
+      {new Date().toLocaleTimeString()} We're currently open!
+    </footer>
   );
 }
 
