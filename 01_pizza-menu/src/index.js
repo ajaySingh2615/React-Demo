@@ -76,11 +76,20 @@ function Menu() {
       <h2>Our Menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <>
+          <p>
+            Pizza is a delicious dish that combines a crispy crust, savory
+            sauce, melted cheese, and a variety of toppings. It can be
+            customized to suit anyone's taste, from classic pepperoni to
+            veggie-packed creations. Whether shared with friends or enjoyed
+            solo, pizza is a comfort food loved worldwide.
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
         <p>We're still working on our menu. Please come back later :)</p>
       )}
