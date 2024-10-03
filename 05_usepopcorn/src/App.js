@@ -56,13 +56,24 @@ const tempWatchedData = [
 ];
 
 const KEY = "a9ee55a4";
+
 export default function App() {
   const [movies, setMovies] = React.useState([]);
   const [watched, setWatched] = React.useState([]);
+  const query = "interstellar";
 
-  fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+  React.useEffect(function () {
+    async function fetchMovies() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+      );
+
+      const data = await res.json();
+      setMovies(data.Search);
+      console.log(data.Search);
+    }
+    fetchMovies();
+  }, []);
 
   return (
     <>
