@@ -1,5 +1,5 @@
 import React from "react";
-import ListBox from "./ListBox";
+import ListBox from "./Box";
 import WatchedBox from "./WatchedBox";
 
 function Main({ children }) {
