@@ -1,14 +1,11 @@
 import React from "react";
 import Logo from "./Logo";
-import NumResults from "./NumResults";
-import Search from "./Search";
 
-function Navbar() {
+function Navbar({ children }) {
   return (
     <nav className="nav-bar">
       <Logo />
-      <Search />
-      <NumResults />
+      {children}
     </nav>
   );
 }
