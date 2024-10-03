@@ -1,5 +1,7 @@
 import React from "react";
 import Box from "./components/Box";
+import ErrorMessage from "./components/ErrorMessage";
+import Loader from "./components/Loader";
 import Main from "./components/Main";
 import MovieList from "./components/MovieList";
 import Navbar from "./components/Navbar";
@@ -60,17 +62,32 @@ const KEY = "a9ee55a4";
 export default function App() {
   const [movies, setMovies] = React.useState([]);
   const [watched, setWatched] = React.useState([]);
-  const query = "interstellar";
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const query = "dsfd";
 
   React.useEffect(function () {
     async function fetchMovies() {
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-      );
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
 
-      const data = await res.json();
-      setMovies(data.Search);
-      console.log(data.Search);
+        if (!res.ok)
+          throw new Error("Something went wrong with fetching movies");
+
+        const data = await res.json();
+
+        if (data.Response === "False") throw new Error("Movie not found!");
+
+        setMovies(data.Search);
+      } catch (err) {
+        console.error(err.message);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchMovies();
   }, []);
@@ -84,7 +101,9 @@ export default function App() {
 
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
         </Box>
 
         <Box>
