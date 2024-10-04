@@ -69,7 +69,15 @@ export default function App() {
   const [watched, setWatched] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-  const [selectedId, setSelectedId] = React.useState("tt1375666");
+  const [selectedId, setSelectedId] = React.useState(null);
+
+  function handleSelectMovie(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
 
   React.useEffect(
     function () {
@@ -119,13 +127,18 @@ export default function App() {
       <Main>
         <Box>
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
           {error && <ErrorMessage message={error} />}
         </Box>
 
         <Box>
           {selectedId ? (
-            <MovieDetail selectedId={selectedId} />
+            <MovieDetail
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+            />
           ) : (
             <>
               <WatchedSummary watched={watched} />
