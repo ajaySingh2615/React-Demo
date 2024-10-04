@@ -14,7 +14,7 @@ import WatchedSummary from "./components/WatchedSummary";
 const KEY = "a9ee55a4";
 
 export default function App() {
-  const [query, setQuery] = React.useState("inception");
+  const [query, setQuery] = React.useState("");
   const [movies, setMovies] = React.useState([]);
   const [watched, setWatched] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -61,9 +61,8 @@ export default function App() {
           setMovies(data.Search);
           setError("");
         } catch (err) {
-          console.error(err.message);
-
           if (err.name !== "AbortError") {
+            console.error(err.message);
             setError(err.message);
           }
         } finally {
@@ -76,6 +75,8 @@ export default function App() {
         setError("");
         return;
       }
+
+      handleCloseMovie();
 
       fetchMovies();
 
