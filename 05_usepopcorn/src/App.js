@@ -16,10 +16,15 @@ const KEY = "a9ee55a4";
 export default function App() {
   const [query, setQuery] = React.useState("");
   const [movies, setMovies] = React.useState([]);
-  const [watched, setWatched] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [selectedId, setSelectedId] = React.useState(null);
+
+  // const [watched, setWatched] = React.useState([]);
+  const [watched, setWatched] = React.useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -36,6 +41,13 @@ export default function App() {
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((m) => m.imdbID !== id));
   }
+
+  React.useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   React.useEffect(
     function () {
