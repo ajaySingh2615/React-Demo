@@ -9,6 +9,15 @@ function MovieDetail({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [userRating, setUserRating] = React.useState("");
 
+  const countRef = React.useRef(0);
+
+  React.useEffect(
+    function () {
+      if (userRating) countRef.current++;
+    },
+    [userRating]
+  );
+
   const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
   const watchedUserRating = watched.find(
     (movie) => movie.imdbID === selectedId
@@ -36,6 +45,7 @@ function MovieDetail({ selectedId, onCloseMovie, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecision: countRef.current,
     };
 
     onAddWatched(newWatchedMovie);
